@@ -1,7 +1,7 @@
 ## Ask me questions or die!
 ## Type quit to exit the program.
 
-import pickle, nltk
+import pickle, query
 from os.path import isfile
 from nltk.tokenize import word_tokenize
 from nltk.corpus import treebank
@@ -23,8 +23,8 @@ def load_data():
     global _parser, _brown
     if _brown == None:
         print "Loading corpus words..."
-        _brown = treebank.tagged_sents()
-        _brown = {w.lower() for sent in _brown for w,t in sent}
+        _brown = treebank.words()
+        _brown = {w.lower() for w in _brown}
     if _parser == None:
         print "Loading sentence parser..."
         _parser = pickle.load(_p_parser)
@@ -76,3 +76,12 @@ while line != "exit":
             print "Goodbye."
             _bot_name = ""
             _fp_bot = None
+        else:
+            q = query.match_query(line)
+            if q == None:
+                print "I don't understand the question."
+            else:
+                print "{"
+                print "  key: " + q[0]
+                print "  grp: " + str(q[1])
+                print "}"
