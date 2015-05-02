@@ -11,11 +11,19 @@ to redistribute it under certain conditions.\n"""
 _header = "Enter a bot name to begin (type `exit` to quit):"
 
 _data_path = "data/"
-_p_parser = open(_data_path + "pickles/small_parser.p","rb")
+_p_parser = open(_data_path + "pickles/parser.p","rb")
 _bot_name = ""
 _fp_bot = None
 _parser = None
 line = ""
+
+def parse(sent):
+    sent = word_tokenize(sent)
+    brown = nltk.corpus.brown.words()
+    for i, word in enumerate(sent):
+        if word not in brown:
+            sent[i] = 'UNKNOWN'
+    return _parser.parse_one(sent)
 
 def parser_demo():
     global _parser
@@ -27,8 +35,8 @@ def parser_demo():
         sent = raw_input("> ")
         if sent == "exit":
             return
-        parse = _parser.parse_one(word_tokenize(sent))
-        print parse
+        parsed = parse(sent)
+        print parsed
 
 print _header_gpl
 print _header
