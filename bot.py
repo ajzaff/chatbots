@@ -20,14 +20,15 @@ _brown = None
 line = ""
 
 def load_data():
-    global _parser, _brown
-    if _brown == None:
-        print "Loading corpus words..."
-        _brown = treebank.words()
-        _brown = {w.lower() for w in _brown}
-    if _parser == None:
-        print "Loading sentence parser..."
-        _parser = pickle.load(_p_parser)
+    #global _parser, _brown
+    #if _brown == None:
+    #    print "Loading corpus words..."
+    #    _brown = treebank.words()
+    #    _brown = {w.lower() for w in _brown}
+    #if _parser == None:
+    #    print "Loading sentence parser..."
+    #    _parser = pickle.load(_p_parser)
+    return
 
 def parse(sent):
     sent = word_tokenize(sent.lower())
