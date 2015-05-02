@@ -16,7 +16,7 @@ _r_queries = {
     "decision_pres_are":
         re.compile(r"^are you (.+)$",flags=re.IGNORECASE),
     "temporal_past_were":
-        re.compile(r"^when were you (.+)$")
+        re.compile(r"^when were you (.+)$",flags=re.IGNORECASE)
 }
 
 def match_query(query):

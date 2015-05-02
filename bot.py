@@ -51,16 +51,18 @@ def parser_demo():
 print _header_gpl
 print _header
 
-while line != "exit":
+while True:
     line = raw_input(_bot_name + "#> ")
-
-    if line == "demo":
-        parser_demo()
-        continue
 
     ## Try to load a bot by name.
     if _bot_name == "":
         filename = _data_path + line + ".txt"
+
+        if line == "demo":
+            parser_demo()
+            continue
+        elif line == "exit":
+            quit()
 
         ## Test if the file exists.
         if not isfile(filename):
