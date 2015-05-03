@@ -1,7 +1,7 @@
 ## Ask me questions or die!
 ## Type quit to exit the program.
 
-import query, data
+import query, data, answers
 from os.path import isfile
 from nltk.tokenize import word_tokenize
 from collections import OrderedDict
@@ -51,6 +51,22 @@ def ask(line):
         print "grp_words: %s" % words
         for b in best:
             print "(%.2f) %s" % (b[1]/b[2],' '.join(b[0]))
+        if len(score) == 0:
+            print "I don't know."
+        i = 0
+        while i < len(score) and answer(q, score[i][0]) == None:
+            i = i + 1
+
+def answer(query, sent):
+    if query[0].startswith('decision'):
+        print answers.decision(query[1], sent)
+        return 'yes'
+    else:
+        if answers.when(query[1], sent) == None:
+            return None
+        else:
+            print answers.when(query[1], sent)
+            return 'yes'
 
 def converse(line):
     global _bot_name,_fp_bot

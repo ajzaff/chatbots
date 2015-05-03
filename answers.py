@@ -1,3 +1,4 @@
+import data
 from nltk import pos_tag, word_tokenize
 import re, string
 
@@ -5,7 +6,7 @@ months = r'(january|february|march|april|may|june|july|august|september|november
 
 def when(query, sentence):
     sent = pos_tag(sentence)
-    query = word_tokenize(query)
+#    query = word_tokenize(query)
     numpos = []
     monthpos = []
     querypos = []
