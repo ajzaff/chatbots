@@ -4,6 +4,7 @@
 import query, data
 from os.path import isfile
 from nltk.tokenize import word_tokenize
+from collections import OrderedDict
 
 _header_gpl = """\rChatbots version 0.0.1, Copyright (C) 2015 Amanda Doucette, Alan Zaffetti
 Chatbots comes with ABSOLUTELY NO WARRANTY.  This is free software, and you are welcome
@@ -40,15 +41,16 @@ def ask(line):
         print "  key: " + q[0]
         print "  grp: " + str(q[1])
         print "}"
-        words = [w.lower()
+        words = [(w.lower(), w.lower())
                  for x in q[1]
                  for w in word_tokenize(query.strip_punctuation(x))
-                 if w not in query._en_stops]
-        print "grp_words: %s" % words
+                 if w.lower() not in query._en_stops]
+        words = OrderedDict(words).keys()
         score = data.score(words)
         best = data.get_best(score)
+        print "grp_words: %s" % words
         for b in best:
-            print "[%0.2f] %s" % (b[1],' '.join(b[0]))
+            print "(%.2f) %s" % (b[1]/b[2],' '.join(b[0]))
 
 def converse(line):
     global _bot_name,_fp_bot

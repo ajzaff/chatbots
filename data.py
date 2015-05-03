@@ -1,5 +1,5 @@
 from __future__ import division
-import unicodedata,re,query
+import unicodedata,re,query,math
 from nltk.tokenize import sent_tokenize, word_tokenize
 
 _sents = None
@@ -31,24 +31,26 @@ def f1(words):
 def f2(words, text):
     s = []
     for sent in text:
-        total = 1
-        for word1 in words:
-            for word2 in words:
-                if word1 in sent[0] and word2 in sent[0]:
-                    pos1 = sent[0].index(word1)
-                    pos2 = sent[0].index(word2)
-                    dist = abs(pos1-pos2)
-                    total = total + dist
-        s = s + [(sent[0], sent[1], total)]
+        sent_words = [w for w in words if w in sent[0]]
+        if len(sent_words) <= 1:
+            s = s + [(sent[0], sent[1], 1e2)]
+        else:
+            total = 0
+            for word1 in sent_words:
+                for word2 in sent_words:
+                    if word1 != word2:
+                        pos1 = sent[0].index(word1)
+                        pos2 = sent[0].index(word2)
+                        dist = abs(pos1-pos2)
+                        total = total + math.log(1+dist)
+            s = s + [(sent[0], sent[1], total)]
     return s
 
 def score(words):
-    text = f1(words)
-    text = f2(words, text)
-    return [(sent[0], sent[1]/sent[2]) for sent in text]
+    return f2(words, f1(words))
 
 def get_best(scores, n=3):
-    sorted_scores = sorted(scores, key=lambda x:x[1], reverse=True)
+    sorted_scores = sorted(scores, key=lambda x:x[1]/x[2], reverse=True)
     return sorted_scores[:n]
 
 """obama = 'data/obama.txt'
