@@ -1,5 +1,5 @@
 from nltk import pos_tag, word_tokenize
-import re
+import re, string
 
 months = r'(january|february|march|april|may|june|july|august|september|november|october|december|jan|feb|mar|apr|may|jun|jul|aug|sept|oct|dec)'
 
@@ -50,8 +50,21 @@ def when(query, sentence):
             return sent[m][0] + " " + sent[min[0]][0]
 
 
+def decision(query, sentence):
+    sent = string.join(sentence);
+    n = r'( not | no |n\'t |\'nt)'
+    if len(re.findall(n, sent)) == 0:
+        return "Yes"
+    else:
+        return "No"
+
 print when("born", word_tokenize("i was born in july in 1995"))
 
 print when("became president", word_tokenize("i became president in 2012 and was born in 1960"))
 
 print when("died", word_tokenize("i was born in march of 1850 and died in may 1940"))
+
+print decision("president", word_tokenize("barack obama is president"))
+
+print decision("president", word_tokenize("barack obama is not president"))
+
