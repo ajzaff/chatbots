@@ -7,11 +7,10 @@ def tokenize(file):
     global sents
     f = open(file, 'r')
     text = unicode(f.read(), errors='ignore')
-
     unicodedata.normalize('NFKD', text).encode('ascii','ignore')
     sents = sent_tokenize(text)
     sents = [word_tokenize(sent) for sent in sents]
-    sents = [([w.lower() for w in sent], 0) for sent in sents]
+    sents = [([w.lower() for w in sent if w.isalnum()], 0) for sent in sents]
     return sents
 
 def f1(words, text):
@@ -35,6 +34,11 @@ def f2(words, text):
                     total = total + dist
         s = s + [(sent[0], sent[1], total)]
     return s
+
+def score(words, text):
+    text = f1(words, text)
+    text = f2(words, text)
+    return f1/f2
 
 obama = 'data/obama.txt'
 
