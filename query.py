@@ -3,6 +3,7 @@ from nltk import word_tokenize, pos_tag
 from nltk.corpus import stopwords
 
 _en_stops = stopwords.words(fileids='english')
+_r_punctuation = re.compile(r"[^ \w]")
 
 ##################
 ## Query frames ##
@@ -21,8 +22,8 @@ _r_queries = {
         re.compile(r"^when were you (.+)$",flags=re.IGNORECASE)
 }
 
-def strip_punctuation(query):
-    return query.translate(None,string.punctuation)
+def strip_punctuation(s):
+    return re.sub(_r_punctuation, '', s)
 
 def match_query(query):
     query = strip_punctuation(query)
