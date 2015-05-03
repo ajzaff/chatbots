@@ -38,7 +38,7 @@ def f2(words, text):
 def score(words, text):
     text = f1(words, text)
     text = f2(words, text)
-    return f1/f2
+    return [(sent[0], sent[1]/sent[2]) for sent in text]
 
 obama = 'data/obama.txt'
 
